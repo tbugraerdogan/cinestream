@@ -10,7 +10,9 @@ const Movies = () => {
     const fetchMovies = async () => {
       try {
         const response = await fetch(
-          "https://api.themoviedb.org/3/movie/popular?api_key=213dc0eaffdba0d7a2028eed7aa48062"
+          `https://api.themoviedb.org/3/movie/popular?api_key=${
+            import.meta.env.VITE_TMDB_API_KEY
+          }`
         );
         const data = await response.json();
         setMovies(data.results);
@@ -27,7 +29,9 @@ const Movies = () => {
   const fetchTrailer = async (movieId) => {
     try {
       const response = await fetch(
-        `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=213dc0eaffdba0d7a2028eed7aa48062`
+        `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${
+          import.meta.env.VITE_TMDB_API_KEY
+        }`
       );
       const data = await response.json();
       const trailer = data.results.find(
@@ -43,13 +47,20 @@ const Movies = () => {
     }
   };
 
+  const handleOverlayClick = (e) => {
+    // Close the trailer if the click is outside the iframe
+    if (e.target.classList.contains("trailer-container")) {
+      setTrailerUrl("");
+    }
+  };
+
   if (loading) {
     return <p className="loading">Loading movies...</p>;
   }
 
   return (
     <div className="movies-container">
-      <h1 className="title">Movies List</h1>
+      <h1 className="title">Cinestream</h1>
       <ul className="movies-list">
         {movies.map((movie) => (
           <li key={movie.id} className="movie-item">
@@ -69,7 +80,7 @@ const Movies = () => {
         ))}
       </ul>
       {trailerUrl && (
-        <div className="trailer-container">
+        <div className="trailer-container" onClick={handleOverlayClick}>
           <iframe
             className="trailer-iframe"
             width="560"

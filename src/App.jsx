@@ -1,14 +1,16 @@
 import { useState } from "react";
 import "./App.css";
-import Login from "./pages/login/login";
+import { Routes, Route } from "react-router-dom";
+import Login from "./pages/Login/Login";
 import Movies from "./pages/Movies/Movies";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <Movies />
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/movies" element={<Movies />} />
+      </Routes>
     </>
   );
 }
