@@ -26,25 +26,28 @@ const signup = async (name, email, password) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-    await addDoc(collection(db, "user"), {
+    await addDoc(collection(db, "users"), {
       uid: user.uid,
       name,
       authProvider: "local",
       email,
     });
+    return true;
   } catch (error) {
-    console.log("error");
-    alert("error");
+    console.log(error);
+    alert(error.message);
+    return false;
   }
 };
 
 const login = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    alert("loggeddd");
+    return true;
   } catch (error) {
-    console.log("error");
-    alert("error");
+    console.log(error);
+    alert(error.message);
+    return false;
   }
 };
 

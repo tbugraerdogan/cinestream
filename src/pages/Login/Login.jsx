@@ -9,19 +9,35 @@ const Login = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const userAuth = async (event) => {
     event.preventDefault();
+    setError(""); // Clear any previous errors
+
     try {
       if (signState === "Sign In") {
-        await login(email, password);
-        navigate("/movies");
+        const success = await login(email, password);
+        if (success) {
+          console.log("Login successful, navigating to /movies");
+          navigate("/movies");
+        } else {
+          console.log("Login failed");
+          setError("Invalid email or password");
+        }
       } else {
-        await signup(name, email, password);
-        navigate("/movies");
+        const success = await signup(name, email, password);
+        if (success) {
+          console.log("Signup successful, navigating to /movies");
+          navigate("/movies");
+        } else {
+          console.log("Signup failed");
+          setError("Failed to create account");
+        }
       }
     } catch (error) {
       console.error("Authentication error:", error);
+      setError(error.message || "Authentication failed");
     }
   };
 
@@ -33,6 +49,7 @@ const Login = () => {
           <span className="stream-text">STREAM</span>
         </div>
         <h1 className="auth-title">{signState}</h1>
+        {error && <div className="error-message">{error}</div>}
         <form className="forms" onSubmit={userAuth} autoComplete="on">
           {signState === "Sign Up" && (
             <input
@@ -42,6 +59,7 @@ const Login = () => {
               name="name"
               placeholder="Your Name"
               autoComplete="name"
+              required
             />
           )}
           <input
@@ -51,6 +69,7 @@ const Login = () => {
             name="email"
             placeholder="Your Email"
             autoComplete="email"
+            required
           />
           <input
             value={password}
@@ -59,6 +78,7 @@ const Login = () => {
             name="password"
             placeholder="Your Password"
             autoComplete="current-password"
+            required
           />
           <button type="submit">{signState}</button>
         </form>
@@ -66,14 +86,26 @@ const Login = () => {
           {signState === "Sign In" ? (
             <p>
               New to Cinestream?{" "}
-              <span className="point" onClick={() => setSignState("Sign Up")}>
+              <span
+                className="point"
+                onClick={() => {
+                  setSignState("Sign Up");
+                  setError("");
+                }}
+              >
                 Sign up
               </span>
             </p>
           ) : (
             <p>
               Have an account?{" "}
-              <span className="point" onClick={() => setSignState("Sign In")}>
+              <span
+                className="point"
+                onClick={() => {
+                  setSignState("Sign In");
+                  setError("");
+                }}
+              >
                 Sign in
               </span>
             </p>
