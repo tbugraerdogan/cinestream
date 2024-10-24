@@ -1,8 +1,4 @@
-# React + Vite
+Example project with authentication and using another API to get trailers for movies, can be developed in many ways but a good template.
+Also deployed, if you wanna try out.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+https://cinestream-ten.vercel.app/
